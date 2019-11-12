@@ -1,27 +1,36 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <script src="app.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <title> A Very Fake Twitter </title>
   </head>
+
   <body>
-    <script>
+    <header>
+      <div id="title">
+        <h1>Twiddler</h1>
+      </div>
+      <div id="thumbs-logo">
+        <img src="positive-vote.png" width="100">
+      </div>
+    </header>
 
-      $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
-        }
+    <div class="container-fluid" id="page-container">
+    </div>
 
-      });
-
-    </script>
+    <footer id="footer">
+      <p> Icon made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
+      <p> Created by Binh Minh Ngo for Hack Reactor </p>
+    </footer>
   </body>
+
 </html>
