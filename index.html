@@ -8,7 +8,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
-    <script src="app.js"></script>
+    <script src="jquery.timeago.js" type="text/javascript"></script>
     <link rel="stylesheet" href="styles.css">
 
     <title> A Very Fake Twitter </title>
@@ -22,14 +22,76 @@
       </nav>
       <p> Icon made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> </p>
     <div class="container-fluid" id="page-container">
-       <header>
-        <h1 id="title">All twiddles below</h1>
-      </header>
+      <h1 id="title">All twiddles below</h1>
       <div class="goback"> </div>
-      <div class="body">
-        <ul id="twiddle-body"></ul>
-      </div>  
+      <div id="twiddle-container"></div>
+      <div id="twiddle-body"></div>
     </div>
+  </body>
+    <script>
+      $(document).ready(function(){ 
+        // extra credit: display time in human readable format 
+        jQuery("time.timeago").timeago();
+
+        var $body = $('.container-fluid'); 
+        var index = streams.home.length - 1; 
+        //basic update of all twiddles 
+        function updateTwiddle() {
+          while (index >= 0) { 
+            var tweet = streams.home[index];
+            var $main = $('<li class="main"></li>');
+            $main.appendTo($body);
+
+            var $tweet = $('<div class="tweet"></div>'); 
+            $tweet.text(' ' + tweet.message + ' '); 
+            $tweet.appendTo($main);
+            var $timestamp = $('<div class="timestamp">' + $.timeago(tweet.created_at) + '</div>');
+
+            $timestamp.appendTo($main);
+
+            var $user = $('<a class="user" data-value="' + tweet.user + '"></a>');
+            $user.addClass(".user").text('@' + tweet.user + ': '); 
+            $user.prependTo($main); 
+            index --; 
+          }
+        };
+
+        updateTwiddle()
+
+        //allow user to click on username to filter tweets by user
+        $(".user").on("click", function() {
+          var username = $(this).data("value"); 
+          $body.html(''); 
+          //returns to homepage
+          var $home = $('<div class="home"><a href="index.html">Go back to Twiddler</a></div>');
+          $home.appendTo($body);
+          // header displaying which user's tweets are shown
+          var $twiddleUser = $('<header><h4>Now viewing...' + username +'</h4></header>');
+          $twiddleUser.appendTo($body);
+
+          // generate user's tweets similar to above
+          var userIndex = streams.users[username].length - 1;
+
+          while (userIndex >= 0) {
+            var userTweet = streams.users[username][userIndex];
+            var $main = $('<ul class="main"></ul>');
+            $main.appendTo($body)
+            var $tweet = $('<li class="tweet"></li>');
+            $tweet.text(userTweet.message);
+            $tweet.appendTo($main);
+            var $timestamp = $('<p class="timestamp"></p>');
+            $timestamp.text($.timeago(userTweet.created_at));
+            $timestamp.appendTo($main);
+            var $user = $('<a class="user" data-value="' + userTweet.user + '"></a>');
+            $user.text('@' + userTweet.user + ': ');
+            $user.prependTo($main);
+            userIndex -= 1;
+            }
+          }); 
+       
+      });
+
+    </script>
   </body>
 
 </html>
